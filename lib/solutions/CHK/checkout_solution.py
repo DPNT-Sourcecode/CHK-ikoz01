@@ -7,8 +7,8 @@ from collections import defaultdict
 
 value_price_map = {
     'A': 50, 'B': 30, 'C': 20, 'D': 15, 'E': 40, 'F': 10, 'G': 20, 'H': 10, 'I': 35, 'J': 60,
-    'K': 80, 'L': 90, 'M': 15, 'N': 40, 'O': 10, 'P': 50, 'Q': 30, 'R': 50, 'S': 30, 'T': 20,
-    'U': 40, 'V': 50, 'W': 20, 'X': 90, 'Y': 10, 'Z': 50
+    'K': 70, 'L': 90, 'M': 15, 'N': 40, 'O': 10, 'P': 50, 'Q': 30, 'R': 50, 'S': 20, 'T': 20,
+    'U': 40, 'V': 50, 'W': 20, 'X': 17, 'Y': 20, 'Z': 21
 }
 
 special_price = {
@@ -17,14 +17,20 @@ special_price = {
     'E': [{"quantity": 2, 'free': {'B': 1}}],
     'F': [{"quantity": 2, 'free': {'F': 1}}],
     'H': [{"quantity": 10, 'price': 80}, {"quantity": 5, 'price': 45}],
-    'K': [{"quantity": 2, 'price': 150}],
+    'K': [{"quantity": 2, 'price': 120}],
     'Q': [{"quantity": 3, 'price': 80}],
     'R': [{"quantity": 3, 'free': {'Q': 1}}],
     'U': [{"quantity": 3, 'free': {'U': 1}}],
     'V': [{"quantity": 3, 'price': 130}, {"quantity": 2, 'price': 90}],
     'P': [{"quantity": 5, 'price': 200}],
-    'N': [{"quantity": 3, 'free': {'M': 1}}]
+    'N': [{"quantity": 3, 'free': {'M': 1}}],
+    'S': [{"quantity": 3, 'price': 45}],
+    'T': [{"quantity": 3, 'price': 45}],
+    'X': [{"quantity": 3, 'price': 45}],
+    'Y': [{"quantity": 3, 'price': 45}],
+    'Z': [{"quantity": 3, 'price': 45}],
 }
+
 
 group_offers = {
     ('S', 'T', 'X', 'Y', 'Z'): {'quantity': 3, 'price': 45}
@@ -127,7 +133,5 @@ def checkout(skus):
     total_price += group_offer_price
     return total_price
 
-
-print(checkout("C"))
 
 
