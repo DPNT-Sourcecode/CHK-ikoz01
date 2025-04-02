@@ -27,7 +27,7 @@ from collections import int
 
 def checkout(skus):
     value_price_map = {'A':50, 'B': 30, 'C':20, 'D':15}
-    special_price = {'A': [{"quantity": 3, 'price': 130}], 'B': [{"quantity": 2, 'price': 45}]}
+    special_price = {'A': {"quantity": 3, 'price': 130}, 'B': {"quantity": 2, 'price': 45}}
 
     sku_quantity_map = defaultdict(int)
     for char in skus:
@@ -37,10 +37,18 @@ def checkout(skus):
     for sku, quantity in sku_quantity_map.items():
         min_price = quantity* value_price_map.get(sku, float('inf'))
 
-        
+        if sku in special_price:
+            offer = special_price[sku]
+            offer_quantity = offer.get('quantity')
+            offer_price = offer.get('price')
+
+            min_price = 
+
+                
 
 
     raise NotImplementedError()
+
 
 
 
