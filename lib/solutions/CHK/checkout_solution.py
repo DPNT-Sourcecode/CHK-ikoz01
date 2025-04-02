@@ -26,6 +26,31 @@ special_price = {
     'N': [{"quantity": 3, 'free': {'M': 1}}]
 }
 
+def apply_group_offers(sku_quantity_map):
+    for group_skus, offer in group_offers.items():
+        eligible_skus = {sku: sku_quantity_map.get(sku, 0) for sku in group_skus}
+        total_eligible_items = sum(eligible_skus.values())
+        
+        if total_eligible_items >= offer['quantity']:
+            discount_count = total_eligible_items // offer['quantity']
+            
+            # Apply the discount
+            discounted_price = discount_count * offer['price']
+            
+            # Remove the items from the sku_quantity_map
+            items_to_remove = offer['quantity'] * discount_count
+            
+            # Find the skus to remove.
+            sorted_skus = sorted(eligible_skus.items(), key=lambda item: item[1], reverse=True)
+            for sku, count in sorted_skus:
+                remove_count = min(sku_quantity_map[sku], items_to_remove)
+                sku_quantity_map[sku] -= remove_count
+                items_to_remove -= remove_count
+                if items_to_remove == 0:
+                    break
+            return discounted_price
+    return 0
+
 def apply_free_offers(sku_quantity_map):
 
     for sku, offers in special_price.items():
@@ -86,6 +111,7 @@ def checkout(skus):
         sku_quantity_map[char] +=1
 
     apply_free_offers(sku_quantity_map)
+    group_offer_price = apply_group_offers(sku_quantity_map)
 
     total_price = 0
     for sku, quantity in sku_quantity_map.items():
@@ -98,3 +124,4 @@ def checkout(skus):
 
 
 print(checkout("C"))
+
