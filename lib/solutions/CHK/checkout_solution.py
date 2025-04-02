@@ -21,7 +21,6 @@ special_price = {
     'N': [{"quantity": 3, 'free': {'M': 1}}],
 }
 
-
 group_offers = {
     ('S', 'T', 'X', 'Y', 'Z'): {'quantity': 3, 'price': 45}
 }
@@ -33,11 +32,9 @@ def apply_group_offers(sku_quantity_map):
 
         if total_eligible_items >= offer['quantity']:
             discount_count = total_eligible_items // offer['quantity']
-
             discounted_price = discount_count * offer['price']
 
             items_to_remove = offer['quantity'] * discount_count
-
             sorted_skus = sorted(eligible_skus.items(), key=lambda item: item[1], reverse=True)
             for sku, count in sorted_skus:
                 remove_count = min(sku_quantity_map[sku], items_to_remove)
@@ -47,7 +44,7 @@ def apply_group_offers(sku_quantity_map):
                     break
             return discounted_price
     return 0
-    
+
 
 def apply_free_offers(sku_quantity_map):
     for sku, offers in special_price.items():
@@ -64,7 +61,6 @@ def apply_free_offers(sku_quantity_map):
                         else:
                             chargeable_item = offer_quantity * (sku_quantity_map[sku] // (offer_quantity + free_item_count)) + (sku_quantity_map[sku] % (offer_quantity + free_item_count))
                             sku_quantity_map[free_item_sku] = chargeable_item
-
 
 
 def calculate_item_price(sku, quantity):
@@ -107,4 +103,7 @@ def checkout(skus):
     total_price += group_offer_price
     return total_price
 
-print(checkout("SSSZ"))
+
+# Example test cases
+print(checkout("SSSZ"))  # Should return 65
+
