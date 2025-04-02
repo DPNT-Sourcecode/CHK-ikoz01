@@ -1,5 +1,5 @@
 # noinspection PyShadowingBuiltins,PyUnusedLocal
-def compute(x: int, y: int) -> int
+def compute(x: int, y: int) -> int:
     """
     Returns the result of summation of two numbers between 0 and 100
 
