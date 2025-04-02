@@ -37,8 +37,10 @@ def apply_free_offers(sku_quantity_map):
                 free_item_sku, free_item_count = next(iter(offer['free'].items()))
                 
                 if sku in sku_quantity_map:
+
                     free_items_to_take = (sku_quantity_map[sku] // offer_quantity) * free_item_count
                     if free_item_sku in sku_quantity_map:
+                        print(sku, free_item_sku)
                         sku_quantity_map[free_item_sku] = max(0, sku_quantity_map[free_item_sku] - free_items_to_take)
 
 
@@ -85,7 +87,10 @@ def checkout(skus):
             
 
             min_price = min(min_price, offer_price_product+ remaining_quantity * value_price_map.get(sku, float('inf')))
-
+        print(sku, quantity, min_price)
         total_price += min_price
 
     return total_price
+
+
+print(checkout("FFFF"))
