@@ -32,6 +32,15 @@ def checkout(skus):
     sku_quantity_map = defaultdict(int)
     for char in skus:
         sku_quantity_map[char] +=1
+
+    total_price = 0
+    for sku, quantity in sku_quantity_map.items():
+        min_price = quantity* value_price_map.get(sku, float('inf'))
+
+        
+
+
     raise NotImplementedError()
+
 
 
