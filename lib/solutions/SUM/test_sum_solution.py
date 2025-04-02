@@ -1,10 +1,10 @@
 import pytest
-# import sys
-# from pathlib import Path
+import sys
+from pathlib import Path
 
-# # Add the project root to sys.path
-# sys.path.append(str(Path(__file__).parent.parent)) 
-# from SUM.sum_solution import compute
+# Add the project root to sys.path
+sys.path.append(str(Path(__file__).parent.parent)) 
+from SUM.sum_solution import compute
 
 
 def test_compute_with_valid_input():
@@ -49,3 +49,4 @@ def test_x_and_y_out_of_range():
         compute(101, 101)
 
     assert str(error_mesg.value) == "x must be between 0 and 100"
+
