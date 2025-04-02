@@ -4,9 +4,9 @@
 # skus = unicode string
 
 from collections import defaultdict
-value_price_map = {'A':50, 'B': 30, 'C':20, 'D':15, 'E':40}
+value_price_map = {'A':50, 'B': 30, 'C':20, 'D':15, 'E':40, 'F':10}
 special_price = {'A': [{"quantity": 5, 'price': 200},{"quantity": 3, 'price': 130}, ], 'B': [{"quantity": 2, 'price': 45}], 
-'E': [{"quantity": 2, 'free': 1}]}
+'E': [{"quantity": 2, 'free': ['B':1]}], 'F': [{"quantity": 2, 'free': ['F':1]}]}
 
 def checkout(skus):
     """
@@ -69,10 +69,4 @@ def checkout(skus):
         total_price += min_price
 
     return total_price
-
-
-
-
-
-
 
