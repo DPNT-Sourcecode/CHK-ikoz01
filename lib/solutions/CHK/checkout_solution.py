@@ -26,7 +26,7 @@ def checkout(skus):
 
     free_B = 0
     if sku_quantity_map["E"] > 0:
-        offer = offers[0]
+        offer = special_price["E"][0]
         offer_quantity = offer.get('quantity')
         offer_free_item = offer.get('free')
 
@@ -55,6 +55,7 @@ def checkout(skus):
         total_price += min_price
 
     return total_price
+
 
 
 
