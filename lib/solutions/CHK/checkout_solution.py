@@ -34,6 +34,16 @@ def checkout(skus):
         free_B = offer_free_item * (quantity_E // offer_quantity)
         if sku_quantity_map["B"] - free_B >= 0:
             sku_quantity_map["B"] -= free_B
+    
+    if sku_quantity_map["F"] > 0:
+        offer = special_price["F"][0]
+        offer_quantity = offer.get('quantity')
+        offer_free_item = offer.get('free')
+
+        quantity_F = sku_quantity_map["F"] 
+        free_F = offer_free_item * (quantity_F // offer_quantity)
+        if sku_quantity_map["B"] - free_B >= 0:
+            sku_quantity_map["B"] -= free_B
 
     total_price = 0
     for sku, quantity in sku_quantity_map.items():
@@ -42,7 +52,7 @@ def checkout(skus):
         
         min_price = quantity* value_price_map.get(sku, float('inf'))
         remaining_quantity = quantity
-        if sku != "E" and sku in special_price:
+        if sku != "E" and sku != "F" and sku in special_price:
             offers = special_price[sku]
 
             offer_price_product = 0
@@ -59,6 +69,7 @@ def checkout(skus):
         total_price += min_price
 
     return total_price
+
 
 
 
