@@ -1,0 +1,12 @@
+import pytest
+import sys
+from pathlib import Path
+
+# Add the project root to sys.path
+sys.path.append(str(Path(__file__).parent.parent)) 
+from HLO.hello_solution import hello
+
+def test_hello_with_valid_input():
+
+    assert hello("Affan") == "Hello Affan"
+

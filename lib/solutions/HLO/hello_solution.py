@@ -12,6 +12,7 @@ def hello(friend_name: str) -> str:
     Returns: 
     A string containing "Hello <friend_name>"
     """
-    return "Hello {}", friend_name
+    return "Hello {}".format(friend_name)
+
 
 
