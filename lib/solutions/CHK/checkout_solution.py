@@ -35,6 +35,8 @@ def checkout(skus):
 
     total_price = 0
     for sku, quantity in sku_quantity_map.items():
+        if sku not in value_price_map:
+            return -1
         min_price = quantity* value_price_map.get(sku, float('inf'))
 
         if sku in special_price:
@@ -42,12 +44,13 @@ def checkout(skus):
             offer_quantity = offer.get('quantity')
             offer_price = offer.get('price')
 
-            min_price = 
+            offer_price = (quantity//offer_quantity) * offer_price + (quantity%offer_quantity) * value_price_map.get(sku, float('inf'))
+            min_price = min(min_price, offer_price)
 
-                
+        total_price += min_price
 
 
-    raise NotImplementedError()
+print(checkout("AAB"))
 
 
 
