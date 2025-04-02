@@ -26,24 +26,28 @@ group_offers = {
 }
 
 def apply_group_offers(sku_quantity_map):
+    total_discount = 0  # Initialize total discount
+
     for group_skus, offer in group_offers.items():
         eligible_skus = {sku: sku_quantity_map.get(sku, 0) for sku in group_skus}
         total_eligible_items = sum(eligible_skus.values())
 
         if total_eligible_items >= offer['quantity']:
+            # Apply group offer
             discount_count = total_eligible_items // offer['quantity']
-            discounted_price = discount_count * offer['price']
+            total_discount += discount_count * offer['price']
 
+            # Deduct the items used in the offer
             items_to_remove = offer['quantity'] * discount_count
-            sorted_skus = sorted(eligible_skus.items(), key=lambda item: item[1], reverse=True)
-            for sku, count in sorted_skus:
+            for sku, count in sorted(eligible_skus.items(), key=lambda item: value_price_map[item[0]], reverse=True):
                 remove_count = min(sku_quantity_map[sku], items_to_remove)
                 sku_quantity_map[sku] -= remove_count
                 items_to_remove -= remove_count
                 if items_to_remove == 0:
                     break
-            return discounted_price
-    return 0
+
+    return total_discount
+
 
 
 def apply_free_offers(sku_quantity_map):
@@ -100,10 +104,11 @@ def checkout(skus):
             return -1
 
         total_price += calculate_item_price(sku, quantity)
+
     total_price += group_offer_price
     return total_price
 
 
-# Example test cases
-print(checkout("SSSZ"))  # Should return 65
+
+
 
