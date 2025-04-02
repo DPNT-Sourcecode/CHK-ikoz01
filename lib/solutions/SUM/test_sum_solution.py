@@ -1,10 +1,10 @@
 import pytest
-import sys
-from pathlib import Path
+# import sys
+# from pathlib import Path
 
-# Add the project root to sys.path
-sys.path.append(str(Path(__file__).parent.parent)) 
-from SUM.sum_solution import compute
+# # Add the project root to sys.path
+# sys.path.append(str(Path(__file__).parent.parent)) 
+# from SUM.sum_solution import compute
 
 
 def test_compute_with_valid_input():
