@@ -46,25 +46,27 @@ def apply_free_offers(sku_quantity_map):
                             sku_quantity_map[free_item_sku] =  chargeable_item
 
 def calculate_item_price(sku, quantity):
-        min_price = quantity* value_price_map.get(sku, float('inf'))
-        remaining_quantity = quantity
-        if sku in special_price:
-            offers = special_price[sku]
+    min_price = quantity* value_price_map.get(sku, float('inf'))
+    remaining_quantity = quantity
+    if sku in special_price:
+        offers = special_price[sku]
 
-            offer_price_product = 0
-            for offer in offers:
-                if 'price' in offer:
-                    offer_quantity = offer['quantity']
-                    offer_price = offer['price']
+        offer_price_product = 0
+        for offer in offers:
+            if 'price' in offer:
+                offer_quantity = offer['quantity']
+                offer_price = offer['price']
 
-                    if remaining_quantity is not None: 
-                        offer_price_product += (remaining_quantity // offer_quantity) * offer_price
-                        remaining_quantity %= offer_quantity
-                    else:
-                        return -1 
-            
+                if remaining_quantity is not None: 
+                    offer_price_product += (remaining_quantity // offer_quantity) * offer_price
+                    remaining_quantity %= offer_quantity
+                else:
+                    return -1 
+        
 
-            min_price = min(min_price, offer_price_product+ remaining_quantity * value_price_map.get(sku, float('inf')))
+        min_price = min(min_price, offer_price_product+ remaining_quantity * value_price_map.get(sku, float('inf')))
+
+        return min_price
 
 
 def checkout(skus):
@@ -90,12 +92,9 @@ def checkout(skus):
         if sku not in value_price_map:
             return -1
         
-
-        total_price += min_price
+        total_price += calculate_item_price(sku, quantity)
 
     return total_price
 
-
-print(checkout("FFF"))
 
 
