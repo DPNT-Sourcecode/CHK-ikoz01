@@ -12,3 +12,10 @@ def test_compute_with_valid_input() -> None:
     assert compute(1,2) == 3
     assert compute(0, 100) == 100
     assert compute(100, 99) == 199
+
+def test_x_out_of_range():
+    with pytest.raises(ValueError) as error_mesg:
+        compute(-1, 100)
+
+    assert str(error_mesg.value) == "x must be between 0 and 100"
+
