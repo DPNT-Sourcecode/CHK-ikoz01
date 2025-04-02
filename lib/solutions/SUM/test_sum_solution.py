@@ -13,9 +13,28 @@ def test_compute_with_valid_input() -> None:
     assert compute(0, 100) == 100
     assert compute(100, 99) == 199
 
-def test_x_out_of_range():
+def test_x_out_of_range_lower():
     with pytest.raises(ValueError) as error_mesg:
         compute(-1, 100)
 
     assert str(error_mesg.value) == "x must be between 0 and 100"
+
+def test_x_out_of_range_upper():
+    with pytest.raises(ValueError) as error_mesg:
+        compute(101, 100)
+
+    assert str(error_mesg.value) == "x must be between 0 and 100"
+
+def test_y_out_of_range_lower():
+    with pytest.raises(ValueError) as error_mesg:
+        compute(58, -2)
+
+    assert str(error_mesg.value) == "y must be between 0 and 100"
+
+def test_y_out_of_range_upper():
+    with pytest.raises(ValueError) as error_mesg:
+        compute(58, 101)
+
+    print(error_mesg)
+    # assert str(error_mesg.value) == "y must be between 0 and 100"
 
