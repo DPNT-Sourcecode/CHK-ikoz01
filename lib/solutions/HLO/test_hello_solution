@@ -8,5 +8,6 @@ from HLO.hello_solution import hello
 
 def test_hello_with_valid_input():
 
-    assert hello("Affan") == "Hello Affan"
+    assert hello("Affan") == "Hello, World!"
+
 
