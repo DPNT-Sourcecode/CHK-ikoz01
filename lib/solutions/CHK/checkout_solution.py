@@ -26,12 +26,12 @@ special_price = {
     'Z': [{"quantity": 3, 'price': 45}],
 }
 
+
 group_offers = {
     ('S', 'T', 'X', 'Y', 'Z'): {'quantity': 3, 'price': 45}
 }
 
 def apply_group_offers(sku_quantity_map):
-    group_price = 0
     for group_skus, offer in group_offers.items():
         eligible_skus = {sku: sku_quantity_map.get(sku, 0) for sku in group_skus}
         total_eligible_items = sum(eligible_skus.values())
@@ -40,7 +40,7 @@ def apply_group_offers(sku_quantity_map):
             discount_count = total_eligible_items // offer['quantity']
             
             # Apply the discount
-            group_price = discount_count * offer['price']
+            discounted_price = discount_count * offer['price']
             
             # Remove the items from the sku_quantity_map
             items_to_remove = offer['quantity'] * discount_count
@@ -53,10 +53,11 @@ def apply_group_offers(sku_quantity_map):
                 items_to_remove -= remove_count
                 if items_to_remove == 0:
                     break
-
-    return group_price
+            return discounted_price
+    return 0
 
 def apply_free_offers(sku_quantity_map):
+
     for sku, offers in special_price.items():
         for offer in offers:
             if 'free' in offer:
@@ -64,16 +65,19 @@ def apply_free_offers(sku_quantity_map):
                 free_item_sku, free_item_count = next(iter(offer['free'].items()))
                 
                 if sku in sku_quantity_map:
+
                     if free_item_sku in sku_quantity_map:
                         if sku != free_item_sku:
                             free_items_to_take = (sku_quantity_map[sku] // offer_quantity) * free_item_count                
                             sku_quantity_map[free_item_sku] = max(0, sku_quantity_map[free_item_sku] - free_items_to_take)
                         else:
-                            chargeable_item = offer_quantity * (sku_quantity_map[sku] // (offer_quantity + free_item_count)) + (sku_quantity_map[sku] % (offer_quantity + free_item_count))
-                            sku_quantity_map[free_item_sku] = chargeable_item
+                            
+                            chargeable_item = offer_quantity* (sku_quantity_map[sku] // (offer_quantity+free_item_count)) +  (sku_quantity_map[sku] % (offer_quantity+free_item_count))
+                            sku_quantity_map[free_item_sku] =  chargeable_item
+
 
 def calculate_item_price(sku, quantity):
-    min_price = quantity * value_price_map.get(sku, float('inf'))
+    min_price = quantity* value_price_map.get(sku, float('inf'))
     remaining_quantity = quantity
     if sku in special_price:
         offers = special_price[sku]
@@ -91,7 +95,7 @@ def calculate_item_price(sku, quantity):
                     return -1 
         
 
-        min_price = min(min_price, offer_price_product + remaining_quantity * value_price_map.get(sku, float('inf')))
+        min_price = min(min_price, offer_price_product+ remaining_quantity * value_price_map.get(sku, float('inf')))
 
     return min_price
 
@@ -110,12 +114,9 @@ def checkout(skus):
     """
     sku_quantity_map = defaultdict(int)
     for char in skus:
-        sku_quantity_map[char] += 1
+        sku_quantity_map[char] +=1
 
-    # Apply free offers
     apply_free_offers(sku_quantity_map)
-
-    # Apply group offers
     group_offer_price = apply_group_offers(sku_quantity_map)
 
     total_price = 0
@@ -124,14 +125,7 @@ def checkout(skus):
             return -1
         
         total_price += calculate_item_price(sku, quantity)
-
     total_price += group_offer_price
     return total_price
 
-
-# Test with the given example
-print(checkout("STXZ"))  # Expected output: 62
-
-
-
-
+print(checkout("SSSZ"))
