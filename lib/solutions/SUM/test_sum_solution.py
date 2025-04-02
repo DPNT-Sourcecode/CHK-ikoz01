@@ -49,4 +49,3 @@ def test_x_and_y_out_of_range():
         compute(101, 101)
 
     assert str(error_mesg.value) == "x must be between 0 and 100"
-

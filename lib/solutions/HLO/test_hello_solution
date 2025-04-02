@@ -10,4 +10,3 @@ def test_hello_with_valid_input():
 
     assert hello("Affan") == "Hello, World!"
 
-
