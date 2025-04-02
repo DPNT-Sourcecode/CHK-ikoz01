@@ -38,11 +38,14 @@ def apply_free_offers(sku_quantity_map):
                 
                 if sku in sku_quantity_map:
 
-                    free_items_to_take = (sku_quantity_map[sku] // offer_quantity) * free_item_count
                     if free_item_sku in sku_quantity_map:
-                        print(sku, free_item_sku, free_items_to_take)
-                        sku_quantity_map[free_item_sku] = max(0, sku_quantity_map[free_item_sku] - free_items_to_take)
-
+                        
+                        if sku != free_item_sku:
+                            free_items_to_take = (sku_quantity_map[sku] // offer_quantity) * free_item_count                
+                            sku_quantity_map[free_item_sku] = max(0, sku_quantity_map[free_item_sku] - free_items_to_take)
+                        else:
+                            chargeable_item =  (sku_quantity_map[sku] // (offer_quantity+free_item_count)) +  (sku_quantity_map[sku] % (offer_quantity+free_item_count))
+                            sku_quantity_map[free_item_sku] =  chargeable_item
 
 
 def checkout(skus):
@@ -94,4 +97,5 @@ def checkout(skus):
 
 
 print(checkout("FFFF"))
+
 
