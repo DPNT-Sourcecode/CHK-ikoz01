@@ -40,8 +40,3 @@ def checkout(skus):
         total_price += min_price
 
     return total_price
-
-
-
-
-
