@@ -53,7 +53,7 @@ def checkout(skus):
             offer_free_item_sku = 'F'
             quantity_F = sku_quantity_map["F"] 
             remaning =  (quantity_F % (offer_quantity+offer_free_item))
-            special_quantity = (quantity_F // (offer_quantity+offer_free_item))
+            special_quantity = (quantity_F // (offer_quantity+offer_free_item)) * offer_quantity
 
             min_price = min(min_price, (special_quantity+remaning) *  value_price_map.get(sku, float('inf')))
 
@@ -77,6 +77,6 @@ def checkout(skus):
     return total_price
 
 
-print(checkout("FFF"))
+print(checkout("FFFF"))
 
 
