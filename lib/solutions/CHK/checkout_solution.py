@@ -3,7 +3,7 @@ from collections import defaultdict
 value_price_map = {
     'A': 50, 'B': 30, 'C': 20, 'D': 15, 'E': 40, 'F': 10, 'G': 20, 'H': 10, 'I': 35, 'J': 60,
     'K': 70, 'L': 90, 'M': 15, 'N': 40, 'O': 10, 'P': 50, 'Q': 30, 'R': 50, 'S': 20, 'T': 20,
-    'U': 40, 'V': 50, 'W': 20, 'X': 17, 'Y': 20, 'Z': 20
+    'U': 40, 'V': 50, 'W': 20, 'X': 17, 'Y': 20, 'Z': 21
 }
 
 special_price = {
@@ -19,11 +19,11 @@ special_price = {
     'V': [{"quantity": 3, 'price': 130}, {"quantity": 2, 'price': 90}],
     'P': [{"quantity": 5, 'price': 200}],
     'N': [{"quantity": 3, 'free': {'M': 1}}],
-    'S': [{"quantity": 3, 'price': 45}],
-    'T': [{"quantity": 3, 'price': 45}],
-    'X': [{"quantity": 3, 'price': 45}],
-    'Y': [{"quantity": 3, 'price': 45}],
-    'Z': [{"quantity": 3, 'price': 45}],
+    'S': [],
+    'T': [],
+    'X': [],
+    'Y': [],
+    'Z': [],
 }
 
 
@@ -129,5 +129,6 @@ def checkout(skus):
     return total_price
 
 print(checkout("STXZ"))
+
 
 
