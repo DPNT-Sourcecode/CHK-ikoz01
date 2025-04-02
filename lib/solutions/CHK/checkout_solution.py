@@ -66,7 +66,7 @@ def calculate_item_price(sku, quantity):
 
         min_price = min(min_price, offer_price_product+ remaining_quantity * value_price_map.get(sku, float('inf')))
 
-        return min_price
+    return min_price
 
 
 def checkout(skus):
@@ -96,3 +96,5 @@ def checkout(skus):
 
     return total_price
 
+
+print(checkout("C"))
