@@ -4,9 +4,7 @@
 # skus = unicode string
 
 from collections import defaultdict
-# value_price_map = {'A':50, 'B': 30, 'C':20, 'D':15, 'E':40, 'F':10}
-# special_price = {'A': [{"quantity": 5, 'price': 200},{"quantity": 3, 'price': 130}, ], 'B': [{"quantity": 2, 'price': 45}], 
-# 'E': [{"quantity": 2, 'free': {'B':1}}], 'F': [{"quantity": 2, 'free': {'F':1}}]}
+
 value_price_map = {
     'A': 50, 'B': 30, 'C': 20, 'D': 15, 'E': 40, 'F': 10, 'G': 20, 'H': 10, 'I': 35, 'J': 60,
     'K': 80, 'L': 90, 'M': 15, 'N': 40, 'O': 10, 'P': 50, 'Q': 30, 'R': 50, 'S': 30, 'T': 20,
@@ -39,13 +37,34 @@ def apply_free_offers(sku_quantity_map):
                 if sku in sku_quantity_map:
 
                     if free_item_sku in sku_quantity_map:
-                        
                         if sku != free_item_sku:
                             free_items_to_take = (sku_quantity_map[sku] // offer_quantity) * free_item_count                
                             sku_quantity_map[free_item_sku] = max(0, sku_quantity_map[free_item_sku] - free_items_to_take)
                         else:
-                            chargeable_item =  (sku_quantity_map[sku] // (offer_quantity+free_item_count)) +  (sku_quantity_map[sku] % (offer_quantity+free_item_count))
+                            
+                            chargeable_item = offer_quantity* (sku_quantity_map[sku] // (offer_quantity+free_item_count)) +  (sku_quantity_map[sku] % (offer_quantity+free_item_count))
                             sku_quantity_map[free_item_sku] =  chargeable_item
+
+def calculate_item_price(sku, quantity):
+        min_price = quantity* value_price_map.get(sku, float('inf'))
+        remaining_quantity = quantity
+        if sku in special_price:
+            offers = special_price[sku]
+
+            offer_price_product = 0
+            for offer in offers:
+                if 'price' in offer:
+                    offer_quantity = offer['quantity']
+                    offer_price = offer['price']
+
+                    if remaining_quantity is not None: 
+                        offer_price_product += (remaining_quantity // offer_quantity) * offer_price
+                        remaining_quantity %= offer_quantity
+                    else:
+                        return -1 
+            
+
+            min_price = min(min_price, offer_price_product+ remaining_quantity * value_price_map.get(sku, float('inf')))
 
 
 def checkout(skus):
@@ -71,31 +90,12 @@ def checkout(skus):
         if sku not in value_price_map:
             return -1
         
-        min_price = quantity* value_price_map.get(sku, float('inf'))
-        remaining_quantity = quantity
-        if sku in special_price:
-            offers = special_price[sku]
 
-            offer_price_product = 0
-            for offer in offers:
-                if 'price' in offer:
-                    offer_quantity = offer['quantity']
-                    offer_price = offer['price']
-
-                    if remaining_quantity is not None: 
-                        offer_price_product += (remaining_quantity // offer_quantity) * offer_price
-                        remaining_quantity %= offer_quantity
-                    else:
-                        return -1 
-            
-
-            min_price = min(min_price, offer_price_product+ remaining_quantity * value_price_map.get(sku, float('inf')))
-        print(sku, quantity, min_price)
         total_price += min_price
 
     return total_price
 
 
-print(checkout("FFFF"))
+print(checkout("FFF"))
 
 
