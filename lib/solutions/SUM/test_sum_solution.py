@@ -1,4 +1,5 @@
-from sum_solution import compute
+import pytest
+from SUM.sum_solution import compute
 
 
 def test_compute_with_positive_int_within_range() -> None:
