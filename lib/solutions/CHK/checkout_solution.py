@@ -5,7 +5,7 @@
 
 from collections import defaultdict
 value_price_map = {'A':50, 'B': 30, 'C':20, 'D':15, 'E':40}
-special_price = {'A': [{"quantity": 3, 'price': 130}, {"quantity": 5, 'price': 200}], 'B': [{"quantity": 2, 'price': 45}], 
+special_price = {'A': [{"quantity": 5, 'price': 200},{"quantity": 3, 'price': 130}, ], 'B': [{"quantity": 2, 'price': 45}], 
 'E': [{"quantity": 2, 'free': 1}]}
 
 def checkout(skus):
@@ -45,18 +45,19 @@ def checkout(skus):
         if sku in special_price:
             offers = special_price[sku]
             if sku != 'E':
+                offer_price_product = 0
                 for offer in offers:
                     offer_quantity = offer.get('quantity')
                     offer_price = offer.get('price')
 
-                    offer_price = (quantity//offer_quantity) * offer_price + (quantity%offer_quantity) * value_price_map.get(sku, float('inf'))
-                    min_price = min(min_price, offer_price)
+                    offer_price_product = (quantity//offer_quantity) * offer_price 
+                    quantity -= (quantity%offer_quantity)
+                    
+
+                min_price = min(min_price, offer_price+ quantity * value_price_map.get(sku, float('inf')))
 
         total_price += min_price
 
     return total_price
 
-
-
-
-
+print("AAAAAAAA")
