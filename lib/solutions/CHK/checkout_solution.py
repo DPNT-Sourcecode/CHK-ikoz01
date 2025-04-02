@@ -41,9 +41,6 @@ def apply_free_offers(sku_quantity_map):
                     if free_item_sku in sku_quantity_map:
                         sku_quantity_map[free_item_sku] = max(0, sku_quantity_map[free_item_sku] - free_items_to_take)
 
-    
-
-
 
 
 def checkout(skus):
@@ -76,18 +73,19 @@ def checkout(skus):
 
             offer_price_product = 0
             for offer in offers:
-                offer_quantity = offer.get('quantity')
-                offer_price = offer.get('price')
+                if 'price' in offer:
+                    offer_quantity = offer['quantity']
+                    offer_price = offer['price']
 
-                offer_price_product += (remaining_quantity//offer_quantity) * offer_price 
-                remaining_quantity = (remaining_quantity%offer_quantity)
-                
+                    if remaining_quantity is not None: 
+                        offer_price_product += (remaining_quantity // offer_quantity) * offer_price
+                        remaining_quantity %= offer_quantity
+                    else:
+                        return -1 
+            
 
             min_price = min(min_price, offer_price_product+ remaining_quantity * value_price_map.get(sku, float('inf')))
 
         total_price += min_price
 
     return total_price
-
-
-print(checkout("FFFF"))
