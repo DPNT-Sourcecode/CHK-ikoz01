@@ -28,6 +28,24 @@ special_price = {
     'N': [{"quantity": 3, 'free': {'M': 1}}]
 }
 
+def apply_free_offers(sku_quantity_map):
+
+    for sku, offers in special_price.items():
+        for offer in offers:
+            if 'free' in offer:
+                offer_quantity = offer['quantity']
+                free_item_sku, free_item_count = next(iter(offer['free'].items()))
+                
+                if sku in sku_quantity_map:
+                    free_items_to_take = (sku_quantity_map[sku] // offer_quantity) * free_item_count
+                    if free_item_sku in sku_quantity_map:
+                        sku_quantity_map[free_item_sku] = max(0, sku_quantity_map[free_item_sku] - free_items_to_take)
+
+    
+
+
+
+
 def checkout(skus):
     """
     Returns the checkout value of all skus.
@@ -44,52 +62,16 @@ def checkout(skus):
     for char in skus:
         sku_quantity_map[char] +=1
 
-    free_B = 0
+    apply_free_offers(sku_quantity_map)
+
     total_price = 0
-    if sku_quantity_map["E"] > 0:
-        offer = special_price["E"][0]
-        offer_quantity = offer.get('quantity')
-        offer_free_item = offer.get('free')['B']
-        offer_free_item_sku = 'B'
-
-        quantity_E = sku_quantity_map["E"] 
-        free_B = offer_free_item * (quantity_E // offer_quantity)
-        if sku_quantity_map["B"] - free_B >= 0:
-            sku_quantity_map["B"] -= free_B
-
-    if sku_quantity_map["N"] > 0:
-        offer = special_price["E"][0]
-        offer_quantity = offer.get('quantity')
-        offer_free_item = offer.get('free')['B']
-        offer_free_item_sku = 'B'
-
-        quantity_E = sku_quantity_map["E"] 
-        free_B = offer_free_item * (quantity_E // offer_quantity)
-        if sku_quantity_map["B"] - free_B >= 0:
-            sku_quantity_map["B"] -= free_B
-        
-
-
     for sku, quantity in sku_quantity_map.items():
         if sku not in value_price_map:
             return -1
         
         min_price = quantity* value_price_map.get(sku, float('inf'))
         remaining_quantity = quantity
-        if sku == "F" and sku_quantity_map["F"] > 0:
-
-            offer = special_price["F"][0]
-            offer_quantity = offer.get('quantity')
-            offer_free_item = offer.get('free')['F']
-            offer_free_item_sku = 'F'
-            quantity_F = sku_quantity_map["F"] 
-            remaning =  (quantity_F % (offer_quantity+offer_free_item))
-            special_quantity = (quantity_F // (offer_quantity+offer_free_item)) * offer_quantity
-
-            min_price = min(min_price, (special_quantity+remaning) *  value_price_map.get(sku, float('inf')))
-
-
-        elif sku != "E" and sku in special_price:
+        if sku in special_price:
             offers = special_price[sku]
 
             offer_price_product = 0
